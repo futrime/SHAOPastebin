@@ -1,0 +1,8 @@
+form {
+    width: 400px;
+    max-width: 90%;
+}
+
+.shao-send-email-button {
+    min-width: 25%;
+}

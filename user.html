@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8/normalize.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/user.css">
+    <title>Settings - SHAO Pastebin</title>
+</head>
+
+<body class="vw-100 vh-100 d-flex">
+    <div class="container">
+        <header
+            class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+            <a href="/" class="d-flex align-items-center mb-2 text-dark text-decoration-none mx-3">
+                <h1>SHAO Pastebin</h1>
+            </a>
+
+            <div class="text-end">
+                <a class="text-decoration-none" href="./create.html">
+                    <button class="btn btn-outline-primary me-2 shao-create-button">NEW PASTE</button>
+                </a>
+                <a class="text-decoration-none" href="./list.html">
+                    <button class="btn btn-outline-primary me-2 shao-list-button">MY PASTES</button>
+                </a>
+                <button class="btn btn-outline-secondary shao-logout-button">LOGOUT</button>
+            </div>
+        </header>
+        <main class="row gx-5 w-100 mx-auto">
+            <aside class="col-lg-3 d-flex flex-column">
+                <a href="https://gravatar.com/emails/">
+                    <img class="border rounded-circle w-100 mx-auto mb-3 shao-avatar-view"
+                        title="Click to change your avatar" src="">
+                </a>
+                <div class="mb-5">
+                    <b class="fs-1 shao-username-view"></b><br>
+                    <i class="fs-5 bi-mailbox text-secondary"> </i><a
+                        class="link-dark text-decoration-none fs-5 shao-email-view" href=""></a>
+                </div>
+            </aside>
+            <div class="col-lg-9">
+                <form class="d-flex flex-column mw-100 mx-auto mb-3 shao-verify-email-form d-none">
+                    <label class="form-label">Verify your email</label>
+                    <div class="input-group">
+                        <input type="text" placeholder="Access Key" class="form-control shao-access-key">
+                        <button class="btn btn-outline-primary shao-send-button">Send</button>
+                    </div>
+                    <div class="text-danger shao-verify-email-hint" hidden></div>
+                    <button class="btn btn-outline-primary mt-2 shao-verify-email-button">Verify</button>
+                </form>
+                <form class="d-flex flex-column mw-100 mx-auto mb-3">
+                    <label class="form-label">Update password (Optional)</label>
+                    <input type="password" placeholder="Old password" class="form-control shao-old-password">
+                    <input type="password" placeholder="New password (at least 8 characters)"
+                        class="form-control shao-new-password mt-2">
+                    <div class="text-danger shao-change-password-hint" hidden></div>
+                    <button class="btn btn-outline-primary mt-2 shao-change-password-button">Submit</button>
+                </form>
+                <form class="d-flex flex-column mw-100 mx-auto mb-3">
+                    <label class="form-label">Change email (Optional)</label>
+                    <input type="email" placeholder="Email address (Optional)" class="form-control shao-email">
+                    <div class="text-danger shao-change-email-hint" hidden></div>
+                    <div class="text-danger shao-change-email-hint" hidden></div>
+                    <button class="btn btn-outline-primary mt-2 shao-change-email-button">Submit</button>
+                </form>
+            </div>
+        </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2/js/md5.min.js"></script>
+    <script type="module" src="js/user.mjs" defer></script>
+</body>
+
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8/normalize.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/index.css">
+    <title>SHAO Pastebin</title>
+</head>
+
+<body>
+    <div class="container">
+        <header class="d-flex flex-wrap align-items-center justify-content-between py-3 mb-4 border-bottom">
+            <a href="./" class="d-flex align-items-center col-md-3 mb-0 text-dark text-decoration-none">
+                <h1>SHAO Pastebin</h1>
+            </a>
+
+            <div class="col-md-3 text-end">
+                <a class="text-decoration-none" href="./sign-up.html">
+                    <button class="btn btn-outline-primary me-2 shao-sign-up-button" type="button">SIGN UP</button>
+                </a>
+            </div>
+        </header>
+        <main>
+            <div class="container col-xl-10 col-xxl-8 px-4 py-5">
+                <div class="row align-items-center g-lg-5 py-5">
+                    <div class="col-lg-7 text-center text-lg-start">
+                        <h1 class="display-4 fw-bold lh-1 mb-3">Store and share your snippets</h1>
+                        <p class="col-lg-10 fs-4">SHAO Pastebin is a website for storing and sharing any text online.
+                            This kind of websites are mainly used by programmers to share their code snippets, but
+                            anyone is welcome to paste any text.</p>
+                    </div>
+                    <div class="col-md-10 mx-auto col-lg-5">
+                        <form class="p-4 p-md-5 border rounded-3 bg-light shao-login-form">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="floatingInput">
+                                <label for="floatingInput">Username</label>
+                            </div>
+                            <div class="form-floating">
+                                <input type="password" class="form-control" id="floatingPassword">
+                                <label for="floatingPassword">Password</label>
+                            </div>
+                            <div class="mt-3 text-danger shao-login-failed-hint" hidden>Wrong username or password!
+                            </div>
+                            <button class="w-100 btn btn-lg btn-primary shao-login-button mt-3"
+                                type="submit">LOGIN</button>
+                            <hr class="my-4">
+                            <small class="text-muted">By clicking LOGIN, you agree to <a class="text-decoration-none"
+                                    href="#">the terms of use.</a></small>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2/js/md5.min.js"></script>
+    <script type="module" src="js/index.mjs" defer></script>
+</body>
+
+</html>

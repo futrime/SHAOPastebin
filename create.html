@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8/normalize.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/create.css">
+    <title>Create new paste - SHAO Pastebin</title>
+</head>
+
+<body>
+    <div class="container">
+        <header
+            class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+            <a href="/" class="d-flex align-items-center mb-2 text-dark text-decoration-none mx-3">
+                <h1>SHAO Pastebin</h1>
+            </a>
+
+            <div class="text-end">
+                <a class="text-decoration-none" href="./list.html">
+                    <button class="btn btn-outline-primary me-2 shao-list-button">MY PASTES</button>
+                </a>
+                <a class="text-decoration-none" href="./user.html">
+                    <button class="btn btn-outline-primary me-2 shao-settings-button">SETTINGS</button>
+                </a>
+                <button class="btn btn-outline-secondary shao-logout-button">LOGOUT</button>
+            </div>
+        </header>
+        <main>
+            <label class="form-label">New Paste</label>
+            <input type="text" class="form-control mb-3 shao-paste-title" placeholder="Title">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control shao-paste-alias" placeholder="Alias (Optional)">
+                <input type="text" class="form-control shao-paste-password" placeholder="Password (Optional)">
+            </div>
+            <textarea class="form-control shao-paste-textarea" rows="10" placeholder="Text here..."></textarea>
+            <div class="text-danger shao-create-paste-hint" hidden></div>
+            <button type="button" class="btn btn-outline-primary mt-3 shao-create-paste-button">Create New Paste</button>
+        </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2/js/md5.min.js"></script>
+    <script type="module" src="js/create.mjs" defer></script>
+</body>
+
+</html>

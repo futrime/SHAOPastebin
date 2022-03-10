@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8/normalize.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/list.css">
+    <title>My pastes - SHAO Pastebin</title>
+</head>
+
+<body>
+    <div class="container">
+        <header
+            class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+            <a href="/" class="d-flex align-items-center mb-2 text-dark text-decoration-none mx-3">
+                <h1>SHAO Pastebin</h1>
+            </a>
+
+            <div class="text-end">
+                <a class="text-decoration-none" href="./create.html">
+                    <button class="btn btn-outline-primary me-2 shao-create-button">NEW PASTE</button>
+                </a>
+                <a class="text-decoration-none" href="./user.html">
+                    <button class="btn btn-outline-primary me-2 shao-settings-button">SETTINGS</button>
+                </a>
+                <button class="btn btn-outline-secondary shao-logout-button">LOGOUT</button>
+            </div>
+        </header>
+        <div class="container">
+            <main class="d-flex flex-wrap justify-content-center">
+                <div class="card m-2 flex-fill shao-paste-card-template" hidden>
+                    <a class="text-decoration-none link-dark" href="">
+                        <div class="card-header text-secondary">
+                            <span class="shao-paste-id"></span>
+                            <small class="card-text text-primary shao-paste-info">
+                                <span class="bi-key ms-1" title="This paste is protected by password." hidden></span>
+                            </small>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title shao-paste-title"></h5>
+                        </div>
+                    </a>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2/js/md5.min.js"></script>
+    <script type="module" src="js/list.mjs" defer></script>
+</body>
+
+</html>

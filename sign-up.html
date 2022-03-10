@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8/normalize.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/sign-up.css">
+    <title>Sign up - SHAO Pastebin</title>
+</head>
+
+<body>
+    <div class="container">
+        <header class="d-flex flex-wrap align-items-center justify-content-between py-3 mb-4 border-bottom">
+            <a href="./" class="d-flex align-items-center col-md-3 mb-0 text-dark text-decoration-none">
+                <h1>SHAO Pastebin</h1>
+            </a>
+
+            <div class="col-md-3 text-end">
+                <a class="text-decoration-none" href="./">
+                    <button class="btn btn-outline-primary me-2 shao-login-button" type="button">LOGIN</button>
+                </a>
+            </div>
+        </header>
+        <main>
+            <form class="mx-auto mt-5">
+                <h1 class="h3 mb-3 fw-normal">Sign up your SHAO ID</h1>
+
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="floatingUsername" placeholder="myName">
+                    <label for="floatingUsername">Username (at least 4 characters)</label>
+                </div>
+                <div class="form-floating mt-1">
+                    <input type="email" class="form-control" id="floatingEmail" placeholder="myName@example.com">
+                    <label for="floatingEmail">Email address</label>
+                </div>
+                <div class="form-floating mt-1">
+                    <input type="password" class="form-control" id="floatingPassword" placeholder="myPassword">
+                    <label for="floatingPassword">Password (at least 8 characters)</label>
+                </div>
+                <div class="mt-1 text-danger shao-sign-up-failed-hint" hidden></div>
+
+                <button class="w-100 btn btn-lg btn-primary mt-3 shao-sign-up-button" type="submit">SIGN UP</button>
+                <hr class="my-4">
+                <small class="text-muted">
+                    By clicking SIGN UP, you agree to
+                    <a class="text-decoration-none" href="#">the terms of use</a>.
+                </small>
+            </form>
+        </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2/js/md5.min.js"></script>
+    <script type="module" src="js/sign-up.mjs" defer></script>
+</body>
+
+</html>
