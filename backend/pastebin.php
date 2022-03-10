@@ -160,7 +160,9 @@ switch ($_POST['type']) {
                     update_pastebin($_POST['id'], 'title', $_POST['title']);
                     update_pastebin($_POST['id'], 'text', base64_encode($_POST['text']));
                     update_pastebin($_POST['id'], 'encryption', 1);
-                    update_pastebin($_POST['id'], 'password', $_POST['password']);
+                    if (isset($_POST['password']) && $_POST['password'] != "") {
+                        update_pastebin($_POST['id'], 'password', $_POST['password']);
+                    }
                     update_pastebin($_POST['id'], 'alias', $_POST['alias']);
                     $data = array('code' => 0, 'message' => 'Successfully updated pastebin.');
                     $json = json_encode($data);
