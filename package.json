@@ -1,0 +1,25 @@
+{
+  "name": "shao-pastebin",
+  "version": "1.0.0",
+  "description": "A web app for storing and sharing any text online",
+  "main": "index.html",
+  "scripts": {
+    "test": "http-server ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Futrime/Shao-Pastebin.git"
+  },
+  "keywords": [
+    "pastebin"
+  ],
+  "author": "Futrime",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/Futrime/Shao-Pastebin/issues"
+  },
+  "homepage": "https://github.com/Futrime/Shao-Pastebin#readme",
+  "devDependencies": {
+    "http-server": "^14.1.0"
+  }
+}
