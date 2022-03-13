@@ -26,7 +26,7 @@ if (!isset($_POST['type'])) {
     exit($json);
 }
 switch ($_POST['type']) {
-    case "add": 
+    case "add": // create a new paste
         if (!isset($_POST['token']) || !isset($_POST['title']) || !isset($_POST['text']) || !isset($_POST['encryption']) || empty($_POST['token']) || $_POST['title'] == "" || $_POST['text'] == "") {
             $data = array('code' => 400, 'message' => 'Missing value(s).');
             $json = json_encode($data);
@@ -100,7 +100,7 @@ switch ($_POST['type']) {
             }
         }
         break;
-    case "update": 
+    case "update": // Update a paste
         if (!isset($_POST['token']) || !isset($_POST['id']) || !isset($_POST['title']) || !isset($_POST['text']) || !isset($_POST['encryption']) || empty($_POST['token']) || empty($_POST['id']) || $_POST['title'] == "" || $_POST['text'] == "") {
             $data = array('code' => 400, 'message' => 'Missing value(s)');
             $json = json_encode($data);
@@ -125,7 +125,7 @@ switch ($_POST['type']) {
             $data = array('code' => 423, 'message' => 'Alias too long.');
             $json = json_encode($data);
             exit($json);
-        } else if ($_POST['encryption'] == 1 && (!isset($_POST['password']) || empty($_POST['password']))) {
+        } else if ($_POST['encryption'] == 1 && (!isset($_POST['password']) || empty($_POST['password'])) && empty(pastebin_info_id($_POST['id'])['password'])) {
             $data = array('code' => 424, 'message' => 'Unsupport empty password.');
             $json = json_encode($data);
             exit($json);
@@ -147,7 +147,9 @@ switch ($_POST['type']) {
                 update_pastebin($_POST['id'], 'title', $_POST['title']);
                 update_pastebin($_POST['id'], 'text', base64_encode($_POST['text']));
                 update_pastebin($_POST['id'], 'encryption', 1);
-                update_pastebin($_POST['id'], 'password', $_POST['password']);
+                if (isset($_POST['password']) && $_POST['password'] != "") {
+                    update_pastebin($_POST['id'], 'password', $_POST['password']);
+                }
                 $data = array('code' => 0, 'message' => 'Successfully updated pastebin.');
                 $json = json_encode($data);
                 exit($json);
@@ -196,7 +198,7 @@ switch ($_POST['type']) {
             }
         }
         break;
-    case "list": 
+    case "list": // List all pastes of current user
         if (!isset($_POST['token']) || empty($_POST['token'])) {
             $data = array('code' => 400, 'message' => 'Missing value(s).');
             $json = json_encode($data);
@@ -216,7 +218,7 @@ switch ($_POST['type']) {
         $json = json_encode($data);
         exit($json);
         break;
-    case "delete": 
+    case "delete": // Delete a paste
         if (!isset($_POST['token']) || !isset($_POST['id'])  || empty($_POST['token']) || empty($_POST['id'])) {
             $data = array('code' => 400, 'message' => 'Missing value(s).');
             $json = json_encode($data);
@@ -250,7 +252,7 @@ switch ($_POST['type']) {
             exit($json);
         }
         break;
-    case "info": 
+    case "info": // Fetch content of a paste
         if ((!isset($_POST['id']) || empty($_POST['id'])) && (!isset($_POST['alias']) || empty($_POST['alias']))) {
             $data = array('code' => 400, 'message' => 'Missing value(s).');
             $json = json_encode($data);
