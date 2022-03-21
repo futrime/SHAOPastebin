@@ -45,21 +45,23 @@ function is_user_repeat($key, $value)
 function user_register($username, $password, $email)
 {
     global $pdo;
-    $salt = cook_salt();
-    $time = time();
-    $token = md5($username . '.' . $time . '.' . $salt);
-    $sql = "INSERT INTO `user` (`username`,`mail`,`password`,`level`,`token`,`regist_date`,`latest_date`,`salt`) VALUES (?,?,?,?,?,?,?,?)";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(1, $username);
-    $stmt->bindParam(2, $email);
-    $stmt->bindParam(3, $password);
-    $stmt->bindValue(4, '-1');
-    $stmt->bindParam(5, $token);
-    $stmt->bindParam(6, $time);
-    $stmt->bindParam(7, $time);
-    $stmt->bindParam(8, $salt);
-    $stmt->execute();
-    return $token;
+    if (!is_user_repeat('username', $username) && !is_user_repeat('mail', $email)) {
+        $salt = cook_salt();
+        $time = time();
+        $token = md5($username . '.' . $time . '.' . $salt);
+        $sql = "INSERT INTO `user` (`username`,`mail`,`password`,`level`,`token`,`regist_date`,`latest_date`,`salt`) VALUES (?,?,?,?,?,?,?,?)";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(1, $username);
+        $stmt->bindParam(2, $email);
+        $stmt->bindParam(3, $password);
+        $stmt->bindValue(4, '-1');
+        $stmt->bindParam(5, $token);
+        $stmt->bindParam(6, $time);
+        $stmt->bindParam(7, $time);
+        $stmt->bindParam(8, $salt);
+        $stmt->execute();
+        return $token;
+    } else return 0;
 }
 
 function user_login($username, $password)
@@ -252,10 +254,10 @@ function delete_access_key($uid, $type)
     $pdo->exec($sql);
 }
 
-function add_pastebin($uid, $encryption, $password, $alias, $title, $text)
+function add_pastebin($uid, $encryption, $password, $alias, $title, $text, $metadata)
 {
     global $pdo;
-    $sql = "INSERT INTO `pastebin` (`uid`,`alias`,`encryption`,`password`,`title`,`text`) VALUES (?,?,?,?,?,?)";
+    $sql = "INSERT INTO `pastebin` (`uid`,`alias`,`encryption`,`password`,`title`,`text`,`metadata`) VALUES (?,?,?,?,?,?,?)";
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(1, $uid);
     $stmt->bindParam(2, $alias);
@@ -263,6 +265,7 @@ function add_pastebin($uid, $encryption, $password, $alias, $title, $text)
     $stmt->bindParam(4, $password);
     $stmt->bindParam(5, $title);
     $stmt->bindParam(6, $text);
+    $stmt->bindParam(7, $metadata);
     $stmt->execute();
 }
 

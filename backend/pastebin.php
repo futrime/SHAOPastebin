@@ -64,7 +64,11 @@ switch ($_POST['type']) {
         }
         if ($_POST['encryption'] == 1) {
             if (!isset($_POST['alias']) || empty($_POST['alias'])) {
-                add_pastebin($u_data['id'], 1, $_POST['password'], '', $_POST['title'], base64_encode($_POST['text']));
+                if (isset($_POST['metadata']) || $_POST['metadata'] != "") {
+                    add_pastebin($u_data['id'], 1, $_POST['password'], '', $_POST['title'], base64_encode($_POST['text']), $_POST['metadata']);
+                } else {
+                    add_pastebin($u_data['id'], 1, $_POST['password'], '', $_POST['title'], base64_encode($_POST['text']), '');
+                }
                 $data = array('code' => 0, 'message' => 'Successfully add pastebin.');
                 $json = json_encode($data);
                 exit($json);
@@ -74,7 +78,11 @@ switch ($_POST['type']) {
                     $json = json_encode($data);
                     exit($json);
                 } else {
-                    add_pastebin($u_data['id'], 1, $_POST['password'], $_POST['alias'], $_POST['title'], base64_encode($_POST['text']));
+                    if (isset($_POST['metadata']) || $_POST['metadata'] != "") {
+                        add_pastebin($u_data['id'], 1, $_POST['password'], $_POST['alias'], $_POST['title'], base64_encode($_POST['text']), $_POST['metadata']);
+                    } else {
+                        add_pastebin($u_data['id'], 1, $_POST['password'], $_POST['alias'], $_POST['title'], base64_encode($_POST['text']), '');
+                    }
                     $data = array('code' => 0, 'message' => 'Successfully add pastebin.');
                     $json = json_encode($data);
                     exit($json);
@@ -82,7 +90,11 @@ switch ($_POST['type']) {
             }
         } else {
             if (!isset($_POST['alias']) || empty($_POST['alias'])) {
-                add_pastebin($u_data['id'], 0, '', '', $_POST['title'], base64_encode($_POST['text']));
+                if (isset($_POST['metadata']) || $_POST['metadata'] != "") {
+                    add_pastebin($u_data['id'], 0, '', '', $_POST['title'], base64_encode($_POST['text']), $_POST['metadata']);
+                } else {
+                    add_pastebin($u_data['id'], 0, '', '', $_POST['title'], base64_encode($_POST['text']), '');
+                }
                 $data = array('code' => 0, 'message' => 'Successfully add pastebin.');
                 $json = json_encode($data);
                 exit($json);
@@ -92,7 +104,11 @@ switch ($_POST['type']) {
                     $json = json_encode($data);
                     exit($json);
                 } else {
-                    add_pastebin($u_data['id'], 0, '', $_POST['alias'], $_POST['title'], base64_encode($_POST['text']));
+                    if (isset($_POST['metadata']) || $_POST['metadata'] != "") {
+                        add_pastebin($u_data['id'], 0, '', $_POST['alias'], $_POST['title'], base64_encode($_POST['text']), $_POST['metadata']);
+                    } else {
+                        add_pastebin($u_data['id'], 0, '', $_POST['alias'], $_POST['title'], base64_encode($_POST['text']), '');
+                    }
                     $data = array('code' => 0, 'message' => 'Successfully add pastebin.');
                     $json = json_encode($data);
                     exit($json);
@@ -150,6 +166,9 @@ switch ($_POST['type']) {
                 if (isset($_POST['password']) && $_POST['password'] != "") {
                     update_pastebin($_POST['id'], 'password', $_POST['password']);
                 }
+                if (isset($_POST['metadata']) && $_POST['metadata'] != "") {
+                    update_pastebin($_POST['id'], 'metadata', $_POST['metadata']);
+                }
                 $data = array('code' => 0, 'message' => 'Successfully updated pastebin.');
                 $json = json_encode($data);
                 exit($json);
@@ -165,6 +184,9 @@ switch ($_POST['type']) {
                     if (isset($_POST['password']) && $_POST['password'] != "") {
                         update_pastebin($_POST['id'], 'password', $_POST['password']);
                     }
+                    if (isset($_POST['metadata']) && $_POST['metadata'] != "") {
+                        update_pastebin($_POST['id'], 'metadata', $_POST['metadata']);
+                    }
                     update_pastebin($_POST['id'], 'alias', $_POST['alias']);
                     $data = array('code' => 0, 'message' => 'Successfully updated pastebin.');
                     $json = json_encode($data);
@@ -177,6 +199,9 @@ switch ($_POST['type']) {
                 update_pastebin($_POST['id'], 'text', base64_encode($_POST['text']));
                 update_pastebin($_POST['id'], 'encryption', 0);
                 update_pastebin($_POST['id'], 'password', '');
+                if (isset($_POST['metadata']) && $_POST['metadata'] != "") {
+                    update_pastebin($_POST['id'], 'metadata', $_POST['metadata']);
+                }
                 $data = array('code' => 0, 'message' => 'Successfully updated pastebin.');
                 $json = json_encode($data);
                 exit($json);
@@ -190,6 +215,9 @@ switch ($_POST['type']) {
                     update_pastebin($_POST['id'], 'text', base64_encode($_POST['text']));
                     update_pastebin($_POST['id'], 'encryption', 0);
                     update_pastebin($_POST['id'], 'password', '');
+                    if (isset($_POST['metadata']) && $_POST['metadata'] != "") {
+                        update_pastebin($_POST['id'], 'metadata', $_POST['metadata']);
+                    }
                     update_pastebin($_POST['id'], 'alias', $_POST['alias']);
                     $data = array('code' => 0, 'message' => 'Successfully updated pastebin.');
                     $json = json_encode($data);
@@ -213,7 +241,7 @@ switch ($_POST['type']) {
         $list = array();
         if (isset($_POST['action']) && $_POST['action'] == "backup") {
             for ($i = 0; $i < count($result); $i++) {
-                $list[$i] = array("id" => $result[$i]['id'], "title" => $result[$i]['title'], "encryption" => $result[$i]['encryption'], "password" => $result[$i]['password'], "alias" => $result[$i]['alias'], "text" => base64_decode($result[$i]['text']));
+                $list[$i] = array("id" => $result[$i]['id'], "title" => $result[$i]['title'], "encryption" => $result[$i]['encryption'], "password" => $result[$i]['password'], "alias" => $result[$i]['alias'], "text" => base64_decode($result[$i]['text']), "metadata" => $result[$i]['metadata']);
             }
         } else {
             for ($i = 0; $i < count($result); $i++) {
@@ -274,7 +302,7 @@ switch ($_POST['type']) {
                     $u_data = user_info($_POST['token']);
                 }
                 if ($p_data['encryption'] == 0 || (isset($u_data) && !empty($u_data) && $u_data['id'] == $p_data['uid'])) {
-                    $data = array('code' => 0, 'id' => $p_data['id'], 'alias' => $p_data['alias'], 'encryption' => $p_data['encryption'], 'title' => $p_data['title'], 'text' => base64_decode($p_data['text']));
+                    $data = array('code' => 0, 'id' => $p_data['id'], 'alias' => $p_data['alias'], 'encryption' => $p_data['encryption'], 'title' => $p_data['title'], 'text' => base64_decode($p_data['text']), 'metadata' => $p_data['metadata']);
                     $json = json_encode($data);
                     exit($json);
                 } else if (!isset($_POST['password']) || empty($_POST['password'])) {
@@ -286,7 +314,7 @@ switch ($_POST['type']) {
                     $json = json_encode($data);
                     exit($json);
                 } else {
-                    $data = array('code' => 0, 'id' => $p_data['id'], 'alias' => $p_data['alias'], 'title' => $p_data['title'], 'text' => base64_decode($p_data['text']));
+                    $data = array('code' => 0, 'id' => $p_data['id'], 'alias' => $p_data['alias'], 'encryption' => $p_data['encryption'], 'title' => $p_data['title'], 'text' => base64_decode($p_data['text']), 'metadata' => $p_data['metadata']);
                     $json = json_encode($data);
                     exit($json);
                 }
@@ -333,25 +361,41 @@ switch ($_POST['type']) {
             } else {
                 if ($data[$i]['encryption'] == 1) {
                     if (!isset($data[$i]['alias']) || empty($data[$i]['alias'])) {
-                        add_pastebin($u_data['id'], 1, $data[$i]['password'], '', $data[$i]['title'], base64_encode($data[$i]['text']));
+                        if (isset($data[$i]['metadata']) || $data[$i]['metadata'] != "") {
+                            add_pastebin($u_data['id'], 1, $data[$i]['password'], '', $data[$i]['title'], base64_encode($data[$i]['text']), $data[$i]['metadata']);
+                        } else {
+                            add_pastebin($u_data['id'], 1, $data[$i]['password'], '', $data[$i]['title'], base64_encode($data[$i]['text']), '');
+                        }
                         $list[$i] = array('code' => 0, 'message' => 'Successfully add pastebin.');
                     } else {
                         if (pastebin_info_alias($data[$i]['alias']) || is_numeric($data[$i]['alias'])) {
                             $list[$i] = array('code' => 426, 'message' => 'This alias has been taken.');
                         } else {
-                            add_pastebin($u_data['id'], 1, $data[$i]['password'], $data[$i]['alias'], $data[$i]['title'], base64_encode($data[$i]['text']));
+                            if (isset($data[$i]['metadata']) || $data[$i]['metadata'] != "") {
+                                add_pastebin($u_data['id'], 1, $data[$i]['password'], $data[$i]['alias'], $data[$i]['title'], base64_encode($data[$i]['text']), $data[$i]['metadata']);
+                            } else {
+                                add_pastebin($u_data['id'], 1, $data[$i]['password'], $data[$i]['alias'], $data[$i]['title'], base64_encode($data[$i]['text']), '');
+                            }
                             $list[$i] = array('code' => 0, 'message' => 'Successfully add pastebin.');
                         }
                     }
                 } else {
                     if (!isset($data[$i]['alias']) || empty($data[$i]['alias'])) {
-                        add_pastebin($u_data['id'], 0, '', '', $data[$i]['title'], base64_encode($data[$i]['text']));
+                        if (isset($data[$i]['metadata']) || $data[$i]['metadata'] != "") {
+                            add_pastebin($u_data['id'], 0, '', '', $data[$i]['title'], base64_encode($data[$i]['text']), $data[$i]['metadata']);
+                        } else {
+                            add_pastebin($u_data['id'], 0, '', '', $data[$i]['title'], base64_encode($data[$i]['text']), '');
+                        }
                         $list[$i] = array('code' => 0, 'message' => 'Successfully add pastebin.');
                     } else {
                         if (pastebin_info_alias($data[$i]['alias']) || is_numeric($data[$i]['alias'])) {
                             $list[$i] = array('code' => 426, 'message' => 'This alias has been taken.');
                         } else {
-                            add_pastebin($u_data['id'], 0, '', $data[$i]['alias'], $data[$i]['title'], base64_encode($data[$i]['text']));
+                            if (isset($data[$i]['metadata']) || $data[$i]['metadata'] != "") {
+                                add_pastebin($u_data['id'], 0, '', $data[$i]['alias'], $data[$i]['title'], base64_encode($data[$i]['text']), $data[$i]['metadata']);
+                            } else {
+                                add_pastebin($u_data['id'], 0, '', $data[$i]['alias'], $data[$i]['title'], base64_encode($data[$i]['text']), '');
+                            }
                             $list[$i] = array('code' => 0, 'message' => 'Successfully add pastebin.');
                         }
                     }

@@ -65,7 +65,8 @@ CREATE TABLE `pastebin` (
   `encryption` tinyint(1) NOT NULL,
   `password` varchar(32) NOT NULL,
   `title` varchar(100) NOT NULL,
-  `text` mediumtext NOT NULL
+  `text` mediumtext NOT NULL,
+  `metadata` mediumtext NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
