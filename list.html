@@ -39,6 +39,8 @@ limitations under the License.
                 <a class="text-decoration-none" href="./create.html">
                     <button class="btn btn-outline-primary me-2 shao-create-button">NEW PASTE</button>
                 </a>
+                <button class="btn btn-outline-primary me-2 shao-export-button">EXPORT</button>
+                <button class="btn btn-outline-primary me-2 shao-import-button">IMPORT</button>
                 <a class="text-decoration-none" href="./user.html">
                     <button class="btn btn-outline-primary me-2 shao-settings-button">SETTINGS</button>
                 </a>
@@ -61,6 +63,26 @@ limitations under the License.
                     </a>
                 </div>
             </main>
+        </div>
+        <div class="modal fade shao-modal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Import pastes</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="col-form-label">Upload a backup file</label>
+                            <input type="file" class="form-control shao-modal-file">
+                            <span class="text-danger shao-modal-hint" hidden></span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-primary shao-modal-continue">Continue</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/js/bootstrap.bundle.min.js"></script>

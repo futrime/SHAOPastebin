@@ -57,6 +57,54 @@ postData('pastebin.php', {
         });
     });
 
+document.querySelector('.shao-export-button').addEventListener('click', async () => {
+    const resData = await postData('pastebin.php', {
+        token: localStorage.getItem('token'),
+        type: 'list',
+        action: 'backup'
+    });
+    if (resData.code === 0) {
+        const exportString = JSON.stringify(resData);
+        const nowTimeString = (new Date()).toJSON().replaceAll(':', '-').replaceAll('.', '-');
+        const exportFile = new File([exportString], `shao-pastebin-export-${nowTimeString}.json`, {
+            type: 'application/json'
+        });
+        const blobURL = URL.createObjectURL(exportFile);
+        const aElement = document.createElement('a');
+        aElement.href = blobURL;
+        aElement.download = `shao-pastebin-export-${nowTimeString}.json`;
+        aElement.click();
+        URL.revokeObjectURL(blobURL);
+    }
+});
+
+document.querySelector('.shao-import-button').addEventListener('click', async () => {
+    window.modal = new bootstrap.Modal(
+        document.querySelector('.shao-modal'),
+        {
+            backdrop: 'static',
+            keyboard: false
+        }
+    );
+    modal.show();
+});
+
+document.querySelector('.shao-modal-continue').addEventListener('click', async () => {
+    console.log('111');
+    const importFile = document.querySelector('.shao-modal-file').files[0];
+    if (importFile === undefined) {
+        return;
+    }
+    const importJSONString = await importFile.text();
+    await postData('pastebin.php', {
+        token: localStorage.getItem('token'),
+        type: 'import',
+        json: importJSONString
+    });
+    window.modal.hide();
+    location.reload();
+});
+
 document.querySelector('.shao-logout-button').addEventListener('click', async () => {
     const resData = await postData('user.php', {
         token: localStorage.getItem('token'),
