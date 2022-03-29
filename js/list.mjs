@@ -40,16 +40,16 @@ postData('pastebin.php', {
     .then(resData => {
         resData.data.forEach(element => {
             const card = document.querySelector('.shao-paste-card-template').cloneNode(true);
-            card.querySelector('a').setAttribute('href', `./view.html?${element[0]}`);
-            if (element[4] === '') { // if not set alias
-                card.querySelector('.shao-paste-id').textContent = `#${element[0]}`;
+            card.querySelector('a').setAttribute('href', `./view.html?${element['id']}`);
+            if (element['alias'] === '') { // if not set alias
+                card.querySelector('.shao-paste-id').textContent = `#${element['id']}`;
             } else {
-                card.querySelector('.shao-paste-id').textContent = `#${element[0]} (@${element[4]})`;
+                card.querySelector('.shao-paste-id').textContent = `#${element['id']} (@${element['alias']})`;
             }
-            card.querySelector('.shao-paste-title').textContent = element[1];
+            card.querySelector('.shao-paste-title').textContent = element['title'];
             card.classList.remove('shao-paste-card-template');
             card.classList.add('shao-paste-card');
-            if (element[2] === '1') {
+            if (element['encryption'] === '1') {
                 card.querySelector('.shao-paste-info .bi-key').removeAttribute('hidden');
             }
             card.removeAttribute('hidden');
