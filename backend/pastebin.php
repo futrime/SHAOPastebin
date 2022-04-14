@@ -245,7 +245,7 @@ switch ($_POST['type']) {
             }
         } else {
             for ($i = 0; $i < count($result); $i++) {
-                $list[$i] = array("id" => $result[$i]['id'], "title" => $result[$i]['title'], "encryption" => $result[$i]['encryption'], "alias" => $result[$i]['alias']);
+                $list[$i] = array("id" => $result[$i]['id'], "title" => $result[$i]['title'], "encryption" => $result[$i]['encryption'], "alias" => $result[$i]['alias'], 'metadata' => $result[$i]['metadata']);
             }
         }
         $data = array('code' => 0, 'data' => $list);
@@ -270,7 +270,7 @@ switch ($_POST['type']) {
         }
         $p_data = pastebin_info_id($_POST['id']);
         if ($p_data) {
-            if ($p_data['uid'] != $data['id']) {
+            if ($p_data['uid'] != $u_data['id']) {
                 $data = array('code' => 426, 'message' => 'This pastebin isn\'t yours.');
                 $json = json_encode($data);
                 exit($json);

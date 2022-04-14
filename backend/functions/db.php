@@ -32,7 +32,7 @@ function is_user_repeat($key, $value)
 {
     global $pdo;
     $value = $pdo->quote($value);
-    $sqlco = "SELECT * FROM `user` WHERE `" . $key . "` = {$value}";
+    $sqlco = "SELECT * FROM `shao_user` WHERE `" . $key . "` = {$value}";
     $result = $pdo->query($sqlco);
     $result = $result->fetch();
     if ($result) {
@@ -49,12 +49,12 @@ function user_register($username, $password, $email)
         $salt = cook_salt();
         $time = time();
         $token = md5($username . '.' . $time . '.' . $salt);
-        $sql = "INSERT INTO `user` (`username`,`mail`,`password`,`level`,`token`,`regist_date`,`latest_date`,`salt`) VALUES (?,?,?,?,?,?,?,?)";
+        $sql = "INSERT INTO `shao_user` (`username`,`mail`,`password`,`level`,`token`,`regist_date`,`latest_date`,`salt`) VALUES (?,?,?,?,?,?,?,?)";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(1, $username);
         $stmt->bindParam(2, $email);
         $stmt->bindParam(3, $password);
-        $stmt->bindValue(4, '-1');
+        $stmt->bindValue(4, '0');
         $stmt->bindParam(5, $token);
         $stmt->bindParam(6, $time);
         $stmt->bindParam(7, $time);
@@ -67,7 +67,7 @@ function user_register($username, $password, $email)
 function user_login($username, $password)
 {
     global $pdo;
-    $sqlco = "SELECT * FROM `user` WHERE `username` = ?";
+    $sqlco = "SELECT * FROM `shao_user` WHERE `username` = ?";
     $result = $pdo->prepare($sqlco);
     $result->execute(array($username));
     $result = $result->fetch();
@@ -76,7 +76,7 @@ function user_login($username, $password)
             $salt = cook_salt();
             $time = time();
             $token = md5($username . '.' . $time . '.' . $salt);
-            $sql = "UPDATE `user` SET `latest_date` = '" . $time . "', `token` = '" . $token . "',`salt` = '" . $salt . "' WHERE `username` = '" . $username . "';";
+            $sql = "UPDATE `shao_user` SET `latest_date` = '" . $time . "', `token` = '" . $token . "',`salt` = '" . $salt . "' WHERE `username` = '" . $username . "';";
             $pdo->exec($sql);
             return $token;
         } else {
@@ -90,7 +90,7 @@ function user_login($username, $password)
 function confirm_login($token)
 {
     global $pdo;
-    $sqlco = "SELECT * FROM `user` WHERE `token` = ?";
+    $sqlco = "SELECT * FROM `shao_user` WHERE `token` = ?";
     $result = $pdo->prepare($sqlco);
     $result->execute(array($token));
     $result = $result->fetch();
@@ -104,7 +104,7 @@ function confirm_login($token)
 function user_logout($token)
 {
     global $pdo;
-    $sql = "UPDATE `user` SET `token` = '' WHERE `token` = ? ;";
+    $sql = "UPDATE `shao_user` SET `token` = '' WHERE `token` = ? ;";
     $result = $pdo->prepare($sql);
     $result->execute(array($token));
 }
@@ -112,7 +112,7 @@ function user_logout($token)
 function user_info($token)
 {
     global $pdo;
-    $sqlco = "SELECT * FROM `user` WHERE `token` = ?";
+    $sqlco = "SELECT * FROM `shao_user` WHERE `token` = ?";
     $result = $pdo->prepare($sqlco);
     $result->execute(array($token));
     $result = $result->fetch();
@@ -124,7 +124,7 @@ function creat_confirm_key($token)
     global $pdo;
     $result = user_info($token);
     $uid = $result['id'];
-    $sqlco = "SELECT * FROM `mail_confirm` WHERE `uid` = ? AND `type` = '1'";
+    $sqlco = "SELECT * FROM `shao_mail_confirm` WHERE `uid` = ? AND `type` = '1'";
     $result = $pdo->prepare($sqlco);
     $result->execute(array($uid));
     $result = $result->fetch();
@@ -132,12 +132,12 @@ function creat_confirm_key($token)
         $access_key = $result['access_key'];
         if ($result['expire_date'] < time()) {
             $access_key = md5(time() . cook_salt());
-            $sql = "UPDATE `mail_confirm` SET `access_key` = '" . $access_key . "' , `expire_date` = '" . (time() + 300) . "' WHERE `uid` = '" . $uid . "' AND `type` = '1';";
+            $sql = "UPDATE `shao_mail_confirm` SET `access_key` = '" . $access_key . "' , `expire_date` = '" . (time() + 300) . "' WHERE `uid` = '" . $uid . "' AND `type` = '1';";
             $pdo->exec($sql);
         }
     } else {
         $access_key = md5(time() . cook_salt());
-        $sql = "INSERT INTO `mail_confirm` (`uid`,`access_key`,`expire_date`,`type`) VALUES ('" . $uid . "','" . $access_key . "','" . (time() + 300) . "','1')";
+        $sql = "INSERT INTO `shao_mail_confirm` (`uid`,`access_key`,`expire_date`,`type`) VALUES ('" . $uid . "','" . $access_key . "','" . (time() + 300) . "','1')";
         $pdo->exec($sql);
     }
     return $access_key;
@@ -148,7 +148,7 @@ function search_confirm_key($token)
     global $pdo;
     $result = user_info($token);
     $uid = $result['id'];
-    $sqlco = "SELECT * FROM `mail_confirm` WHERE `uid` = ? AND `type` = '1'";
+    $sqlco = "SELECT * FROM `shao_mail_confirm` WHERE `uid` = ? AND `type` = '1'";
     $result = $pdo->prepare($sqlco);
     $result->execute(array($uid));
     $result = $result->fetch();
@@ -158,7 +158,7 @@ function search_confirm_key($token)
 function update_user_level($token, $level)
 {
     global $pdo;
-    $sql = "UPDATE `user` SET `level` = ? WHERE `token` = ? ;";
+    $sql = "UPDATE `shao_user` SET `level` = ? WHERE `token` = ? ;";
     $result = $pdo->prepare($sql);
     $result->execute(array($level, $token));
 }
@@ -166,7 +166,7 @@ function update_user_level($token, $level)
 function update_user_password($token, $password)
 {
     global $pdo;
-    $sql = "UPDATE `user` SET `password` = ? WHERE `token` = ? ;";
+    $sql = "UPDATE `shao_user` SET `password` = ? WHERE `token` = ? ;";
     $result = $pdo->prepare($sql);
     $result->execute(array($password, $token));
 }
@@ -174,7 +174,7 @@ function update_user_password($token, $password)
 function update_user_email($token, $email)
 {
     global $pdo;
-    $sql = "UPDATE `user` SET `mail` = ? WHERE `token` = ? ;";
+    $sql = "UPDATE `shao_user` SET `mail` = ? WHERE `token` = ? ;";
     $result = $pdo->prepare($sql);
     $result->execute(array($email, $token));
 }
@@ -182,7 +182,7 @@ function update_user_email($token, $email)
 function user_info_email($email)
 {
     global $pdo;
-    $sqlco = "SELECT * FROM `user` WHERE `mail` = ?";
+    $sqlco = "SELECT * FROM `shao_user` WHERE `mail` = ?";
     $result = $pdo->prepare($sqlco);
     $result->execute(array($email));
     $result = $result->fetch();
@@ -192,7 +192,7 @@ function user_info_email($email)
 function is_email_exist($email)
 {
     global $pdo;
-    $sqlco = "SELECT * FROM `user` WHERE `mail` = '" . $email . "'";
+    $sqlco = "SELECT * FROM `shao_user` WHERE `mail` = '" . $email . "'";
     $result = $pdo->prepare($sqlco);
     $result->execute(array($email));
     $result = $result->fetch();
@@ -208,7 +208,7 @@ function creat_confirm_key_email($email)
     global $pdo;
     $result = user_info_email($email);
     $uid = $result['id'];
-    $sqlco = "SELECT * FROM `mail_confirm` WHERE `uid` = ? AND `type` = '2'";
+    $sqlco = "SELECT * FROM `shao_mail_confirm` WHERE `uid` = ? AND `type` = '2'";
     $result = $pdo->prepare($sqlco);
     $result->execute(array($uid));
     $result = $result->fetch();
@@ -216,12 +216,12 @@ function creat_confirm_key_email($email)
         $access_key = $result['access_key'];
         if ($result['expire_date'] < time()) {
             $access_key = md5(time() . cook_salt());
-            $sql = "UPDATE `mail_confirm` SET `access_key` = '" . $access_key . "' , `expire_date` = '" . (time() + 300) . "' WHERE `uid` = '" . $uid . "' AND `type` = '2';";
+            $sql = "UPDATE `shao_mail_confirm` SET `access_key` = '" . $access_key . "' , `expire_date` = '" . (time() + 300) . "' WHERE `uid` = '" . $uid . "' AND `type` = '2';";
             $pdo->exec($sql);
         }
     } else {
         $access_key = md5(time() . cook_salt());
-        $sql = "INSERT INTO `mail_confirm` (`uid`,`access_key`,`expire_date`,`type`) VALUES ('" . $uid . "','" . $access_key . "','" . (time() + 300) . "','2')";
+        $sql = "INSERT INTO `shao_mail_confirm` (`uid`,`access_key`,`expire_date`,`type`) VALUES ('" . $uid . "','" . $access_key . "','" . (time() + 300) . "','2')";
         $pdo->exec($sql);
     }
     return $access_key;
@@ -232,7 +232,7 @@ function search_confirm_key_email($email)
     global $pdo;
     $result = user_info_email($email);
     $uid = $result['id'];
-    $sqlco = "SELECT * FROM `mail_confirm` WHERE `uid` = ? AND `type` = '2'";
+    $sqlco = "SELECT * FROM `shao_mail_confirm` WHERE `uid` = ? AND `type` = '2'";
     $result = $pdo->prepare($sqlco);
     $result->execute(array($uid));
     $result = $result->fetch();
@@ -242,7 +242,7 @@ function search_confirm_key_email($email)
 function update_user_password_email($email, $password)
 {
     global $pdo;
-    $sql = "UPDATE `user` SET `password` = ? WHERE `email` = ? ;";
+    $sql = "UPDATE `shao_user` SET `password` = ? WHERE `email` = ? ;";
     $result = $pdo->prepare($sql);
     $result->execute(array($password, $email));
 }
@@ -250,14 +250,14 @@ function update_user_password_email($email, $password)
 function delete_access_key($uid, $type)
 {
     global $pdo;
-    $sql = "DELETE FROM `mail_confirm` WHERE `uid` = '" . $uid . "' AND `type` = '" . $type . "'";
+    $sql = "DELETE FROM `shao_mail_confirm` WHERE `uid` = '" . $uid . "' AND `type` = '" . $type . "'";
     $pdo->exec($sql);
 }
 
 function add_pastebin($uid, $encryption, $password, $alias, $title, $text, $metadata)
 {
     global $pdo;
-    $sql = "INSERT INTO `pastebin` (`uid`,`alias`,`encryption`,`password`,`title`,`text`,`metadata`) VALUES (?,?,?,?,?,?,?)";
+    $sql = "INSERT INTO `shao_pastebin` (`uid`,`alias`,`encryption`,`password`,`title`,`text`,`metadata`) VALUES (?,?,?,?,?,?,?)";
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(1, $uid);
     $stmt->bindParam(2, $alias);
@@ -273,14 +273,14 @@ function update_pastebin($id, $type, $value)
 {
     global $pdo;
     $value = $pdo->quote($value);
-    $sql = "UPDATE `pastebin` SET `" . $type . "` = " . $value . " WHERE `id` = '" . $id . "';";
+    $sql = "UPDATE `shao_pastebin` SET `" . $type . "` = " . $value . " WHERE `id` = '" . $id . "';";
     $pdo->exec($sql);
 }
 
 function search_user_pastebin($uid)
 {
     global $pdo;
-    $sqlco = "SELECT * FROM `pastebin` WHERE `uid` = ?";
+    $sqlco = "SELECT * FROM `shao_pastebin` WHERE `uid` = ?";
     $result = $pdo->prepare($sqlco);
     $result->execute(array($uid));
     $result = $result->fetchAll();
@@ -290,7 +290,7 @@ function search_user_pastebin($uid)
 function pastebin_info_id($id)
 {
     global $pdo;
-    $sqlco = "SELECT * FROM `pastebin` WHERE `id` = ?";
+    $sqlco = "SELECT * FROM `shao_pastebin` WHERE `id` = ?";
     $result = $pdo->prepare($sqlco);
     $result->execute(array($id));
     $result = $result->fetch();
@@ -300,7 +300,7 @@ function pastebin_info_id($id)
 function pastebin_info_alias($alias)
 {
     global $pdo;
-    $sqlco = "SELECT * FROM `pastebin` WHERE `alias` = ?";
+    $sqlco = "SELECT * FROM `shao_pastebin` WHERE `alias` = ?";
     $result = $pdo->prepare($sqlco);
     $result->execute(array($alias));
     $result = $result->fetch();
@@ -310,7 +310,7 @@ function pastebin_info_alias($alias)
 function delete_pastebin($id)
 {
     global $pdo;
-    $sql = "DELETE FROM `pastebin` WHERE `id` = ?";
+    $sql = "DELETE FROM `shao_pastebin` WHERE `id` = ?";
     $result = $pdo->prepare($sql);
     $result->execute(array($id));
 }

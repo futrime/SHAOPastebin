@@ -44,7 +44,7 @@ SET time_zone = "+00:00";
 -- 表的结构 `mail_confirm`
 --
 
-CREATE TABLE `mail_confirm` (
+CREATE TABLE `shao_mail_confirm` (
   `id` int(11) NOT NULL,
   `uid` int(11) NOT NULL,
   `access_key` varchar(32) NOT NULL,
@@ -58,7 +58,7 @@ CREATE TABLE `mail_confirm` (
 -- 表的结构 `pastebin`
 --
 
-CREATE TABLE `pastebin` (
+CREATE TABLE `shao_pastebin` (
   `id` int(11) NOT NULL,
   `uid` int(11) NOT NULL,
   `alias` varchar(20) NOT NULL,
@@ -75,7 +75,7 @@ CREATE TABLE `pastebin` (
 -- 表的结构 `user`
 --
 
-CREATE TABLE `user` (
+CREATE TABLE `shao_user` (
   `id` int(11) NOT NULL,
   `username` varchar(30) NOT NULL,
   `mail` varchar(30) NOT NULL,
@@ -94,19 +94,19 @@ CREATE TABLE `user` (
 --
 -- 表的索引 `mail_confirm`
 --
-ALTER TABLE `mail_confirm`
+ALTER TABLE `shao_mail_confirm`
   ADD PRIMARY KEY (`id`);
 
 --
 -- 表的索引 `pastebin`
 --
-ALTER TABLE `pastebin`
+ALTER TABLE `shao_pastebin`
   ADD PRIMARY KEY (`id`);
 
 --
 -- 表的索引 `user`
 --
-ALTER TABLE `user`
+ALTER TABLE `shao_user`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -116,19 +116,19 @@ ALTER TABLE `user`
 --
 -- 使用表AUTO_INCREMENT `mail_confirm`
 --
-ALTER TABLE `mail_confirm`
+ALTER TABLE `shao_mail_confirm`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- 使用表AUTO_INCREMENT `pastebin`
 --
-ALTER TABLE `pastebin`
+ALTER TABLE `shao_pastebin`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- 使用表AUTO_INCREMENT `user`
 --
-ALTER TABLE `user`
+ALTER TABLE `shao_user`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
