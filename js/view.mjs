@@ -17,6 +17,42 @@
 
 import { postData } from './include.mjs'
 
+function insertVideo(resData) {
+    console.log(resData);
+    if (resData.metadata !== '' &&
+        (JSON.parse(resData.metadata)).provider === 'tcr_shao_note' &&
+        (JSON.parse(resData.metadata)).type === 'video') {
+        const el = document.createElement('div');
+        const player = new window.NPlayer.Player({
+            bpControls: {},
+            contextMenus: [],
+            contextMenuToggle: false,
+            controls: [
+                ['play', 'time', 'spacer', 'airplay', 'volume', 'settings', 'web-fullscreen', 'fullscreen'],
+                ['progress']
+            ],
+            i18n: 'zh-CN',
+            settings: ['speed'],
+            src: (JSON.parse(resData.metadata)).src,
+            themeColor: 'rgba(0, 0, 0, 0.3)',
+            volumeVertical: true,
+            plugins: [
+                new NPlayerDanmaku({
+                    autoInsert: false
+                })
+            ]
+        });
+        fetch('https://tsinghuacloudremake.api.021121.xyz/danmaku/?vid=' + (JSON.parse(resData.metadata)).fid)
+            .then(res => res.json())
+            .then(res => {
+                player.danmaku.resetItems(res);
+            }); // Load danmakus
+        document.querySelector('.shao-paste-display').prepend(el);
+        el.style.maxWidth = '50vw';
+        player.mount(el);
+    }
+}
+
 function triggerGuestMode() {
     document.querySelector('.shao-create-button').setAttribute('hidden', '');
     document.querySelector('.shao-list-button').setAttribute('hidden', '');
@@ -99,6 +135,7 @@ if (resData.code === 428) {
     document.querySelector('.shao-paste-title').value = resData.title;
     document.querySelector('.shao-paste-alias').value = resData.alias;
     document.querySelector('.shao-paste-display').innerHTML = marked.parse(`# ${resData.title}\n` + DOMPurify.sanitize(resData.text));
+    insertVideo(resData);
     document.querySelector('.shao-paste-textarea').value = resData.text;
     if (resData.alias === '') {
         document.querySelector('.shao-copy-alias-link-button').setAttribute('hidden', '');
@@ -259,6 +296,7 @@ document.querySelector('.shao-modal-continue').addEventListener('click', async (
     document.querySelector('.shao-paste-title').value = window.resData.title;
     document.querySelector('.shao-paste-alias').value = window.resData.alias;
     document.querySelector('.shao-paste-display').innerHTML = marked.parse(`# ${window.resData.title}\n` + DOMPurify.sanitize(window.resData.text));
+    insertVideo(window.resData);
     document.querySelector('.shao-paste-textarea').value = window.resData.text;
     if (resData.alias === '') {
         document.querySelector('.shao-copy-alias-link-button').setAttribute('hidden', '');
