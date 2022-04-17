@@ -61,7 +61,7 @@ CREATE TABLE `mail_confirm` (
 CREATE TABLE `pastebin` (
   `id` int(11) NOT NULL,
   `uid` int(11) NOT NULL,
-  `alias` varchar(20) NOT NULL,
+  `alias` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `encryption` tinyint(1) NOT NULL,
   `password` varchar(32) NOT NULL,
   `title` varchar(100) NOT NULL,
@@ -77,14 +77,14 @@ CREATE TABLE `pastebin` (
 
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
-  `username` varchar(30) NOT NULL,
-  `mail` varchar(30) NOT NULL,
+  `username` varchar(30) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `mail` varchar(30) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `password` varchar(32) NOT NULL,
   `level` int(11) NOT NULL,
   `token` varchar(32) NOT NULL,
   `regist_date` int(11) NOT NULL,
   `latest_date` int(11) NOT NULL,
-  `salt` varchar(4) NOT NULL
+  `salt` varchar(4) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -102,12 +102,16 @@ ALTER TABLE `mail_confirm`
 --
 ALTER TABLE `pastebin`
   ADD PRIMARY KEY (`id`);
+  ADD UNIQUE KEY `id` (`id`);
 
 --
 -- 表的索引 `user`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`);
+  ADD UNIQUE KEY `username` (`username`),
+  ADD UNIQUE KEY `id` (`id`),
+  ADD UNIQUE KEY `mail` (`mail`);
 
 --
 -- 在导出的表使用AUTO_INCREMENT
