@@ -100,7 +100,7 @@ if (resData.code === 428) {
     document.querySelector('.shao-paste-alias').value = resData.alias;
     document.querySelector('.shao-paste-display').innerHTML = marked.parse(`# ${resData.title}\n` + DOMPurify.sanitize(resData.text));
     document.querySelector('.shao-paste-textarea').value = resData.text;
-    if (resData.alias === '') {
+    if (resData.alias === null) {
         document.querySelector('.shao-copy-alias-link-button').setAttribute('hidden', '');
     }
 }
@@ -174,7 +174,10 @@ document.querySelector('.shao-submit-paste-button').addEventListener('click', as
     document.querySelector('.shao-edit-paste-hint').setAttribute('hidden', '');
 
     const title = document.querySelector('.shao-paste-title').value;
-    const alias = document.querySelector('.shao-paste-alias').value;
+    let alias = document.querySelector('.shao-paste-alias').value;
+    if (alias === '') {
+        alias = null;
+    }
     let encryption = 0;
     let password = document.querySelector('.shao-paste-password').value;
     let is_keep = document.querySelector('.shao-paste-keep-password').checked;
@@ -187,7 +190,7 @@ document.querySelector('.shao-submit-paste-button').addEventListener('click', as
     }
     const content = document.querySelector('.shao-paste-textarea').value;
     let resData = {};
-    if (alias === '') {
+    if (alias === null) {
         resData = await postData('pastebin.php', {
             token: localStorage.getItem('token'),
             id: document.querySelector('.shao-delete-paste-button').getAttribute('data-shao-pid'),
@@ -260,7 +263,7 @@ document.querySelector('.shao-modal-continue').addEventListener('click', async (
     document.querySelector('.shao-paste-alias').value = window.resData.alias;
     document.querySelector('.shao-paste-display').innerHTML = marked.parse(`# ${window.resData.title}\n` + DOMPurify.sanitize(window.resData.text));
     document.querySelector('.shao-paste-textarea').value = window.resData.text;
-    if (resData.alias === '') {
+    if (resData.alias === null) {
         document.querySelector('.shao-copy-alias-link-button').setAttribute('hidden', '');
     }
     window.modal.hide();

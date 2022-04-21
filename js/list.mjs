@@ -41,7 +41,7 @@ postData('pastebin.php', {
         resData.data.forEach(element => {
             const card = document.querySelector('.shao-paste-card-template').cloneNode(true);
             card.querySelector('a').setAttribute('href', `./view.html?${element['id']}`);
-            if (element['alias'] === '') { // if not set alias
+            if (element['alias'] === null) { // if not set alias
                 card.querySelector('.shao-paste-id').textContent = `#${element['id']}`;
             } else {
                 card.querySelector('.shao-paste-id').textContent = `#${element['id']} (@${element['alias']})`;
