@@ -62,11 +62,11 @@ if (localStorage.getItem('token') !== null) {
     }).then(resData => {
         resData.data.forEach(element => {
             if (
-                element[0] === location.search.substring(1) ||
-                (element[4] === location.search.substring(2) && location.search[1] === '@')
+                element['id'] === location.search.substring(1) ||
+                (element['alias'] === location.search.substring(2) && location.search[1] === '@')
             ) { // if this paste is created by current user
                 document.querySelector('.shao-edit-paste-button').removeAttribute('hidden');
-                document.querySelector('.shao-delete-paste-button').setAttribute('data-shao-pid', element[0]);
+                document.querySelector('.shao-delete-paste-button').setAttribute('data-shao-pid', element['id']);
                 return;
             }
         });
