@@ -270,7 +270,7 @@ switch ($_POST['type']) {
         }
         $p_data = pastebin_info_id($_POST['id']);
         if ($p_data) {
-            if ($p_data['uid'] != $data['id']) {
+            if ($p_data['uid'] != $u_data['id']) {
                 $data = array('code' => 426, 'message' => 'This pastebin isn\'t yours.');
                 $json = json_encode($data);
                 exit($json);
