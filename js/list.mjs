@@ -89,20 +89,29 @@ document.querySelector('.shao-import-button').addEventListener('click', async ()
     modal.show();
 });
 
-document.querySelector('.shao-modal-continue').addEventListener('click', async () => {
-    console.log('111');
+document.querySelector('.shao-modal-import').addEventListener('click', async () => {
+    document.querySelector('.shao-modal-hint').setAttribute('hidden', '');
     const importFile = document.querySelector('.shao-modal-file').files[0];
     if (importFile === undefined) {
         return;
     }
     const importJSONString = await importFile.text();
-    await postData('pastebin.php', {
+    let resObj = await postData('pastebin.php', {
         token: localStorage.getItem('token'),
         type: 'import',
         json: importJSONString
     });
-    window.modal.hide();
-    location.reload();
+    let successCount = 0;
+    let failureCount = 0;
+    for (const item of resObj.data) {
+        if (item.code !== 0) {
+            failureCount++;
+        } else {
+            successCount++;
+        }
+    }
+    document.querySelector('.shao-modal-hint').textContent = `导入成功${successCount}条，失败${failureCount}条，刷新后生效。`;
+    document.querySelector('.shao-modal-hint').removeAttribute('hidden');
 });
 
 document.querySelector('.shao-logout-button').addEventListener('click', async () => {

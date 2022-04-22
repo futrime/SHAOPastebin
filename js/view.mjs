@@ -67,6 +67,7 @@ if (localStorage.getItem('token') !== null) {
             ) { // if this paste is created by current user
                 document.querySelector('.shao-edit-paste-button').removeAttribute('hidden');
                 document.querySelector('.shao-delete-paste-button').setAttribute('data-shao-pid', element['id']);
+                document.querySelector('.shao-delete-paste-button').removeAttribute('hidden');
                 return;
             }
         });
@@ -159,7 +160,6 @@ document.querySelector('.shao-edit-paste-button').addEventListener('click', () =
     document.querySelector('.shao-copy-alias-link-button').setAttribute('hidden', '');
     document.querySelector('.shao-edit-paste-button').setAttribute('hidden', '');
     document.querySelector('.shao-submit-paste-button').removeAttribute('hidden');
-    document.querySelector('.shao-delete-paste-button').removeAttribute('hidden');
 });
 
 document.querySelector('.shao-paste-keep-password').addEventListener('click', () => {
