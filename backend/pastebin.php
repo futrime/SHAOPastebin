@@ -64,7 +64,7 @@ switch ($_POST['type']) {
         }
         if ($_POST['encryption'] == 1) {
             if (!isset($_POST['alias']) || empty($_POST['alias'])) {
-                if (isset($_POST['metadata']) || $_POST['metadata'] != "") {
+                if (isset($_POST['metadata']) && $_POST['metadata'] != "") {
                     add_pastebin($u_data['id'], 1, $_POST['password'], NULL, $_POST['title'], base64_encode($_POST['text']), $_POST['metadata']);
                 } else {
                     add_pastebin($u_data['id'], 1, $_POST['password'], NULL, $_POST['title'], base64_encode($_POST['text']), '');
@@ -78,7 +78,7 @@ switch ($_POST['type']) {
                     $json = json_encode($data);
                     exit($json);
                 } else {
-                    if (isset($_POST['metadata']) || $_POST['metadata'] != "") {
+                    if (isset($_POST['metadata']) && $_POST['metadata'] != "") {
                         add_pastebin($u_data['id'], 1, $_POST['password'], $_POST['alias'], $_POST['title'], base64_encode($_POST['text']), $_POST['metadata']);
                     } else {
                         add_pastebin($u_data['id'], 1, $_POST['password'], $_POST['alias'], $_POST['title'], base64_encode($_POST['text']), '');
@@ -90,7 +90,7 @@ switch ($_POST['type']) {
             }
         } else {
             if (!isset($_POST['alias']) || empty($_POST['alias'])) {
-                if (isset($_POST['metadata']) || $_POST['metadata'] != "") {
+                if (isset($_POST['metadata']) && $_POST['metadata'] != "") {
                     add_pastebin($u_data['id'], 0, '', NULL, $_POST['title'], base64_encode($_POST['text']), $_POST['metadata']);
                 } else {
                     add_pastebin($u_data['id'], 0, '', NULL, $_POST['title'], base64_encode($_POST['text']), '');
@@ -104,7 +104,7 @@ switch ($_POST['type']) {
                     $json = json_encode($data);
                     exit($json);
                 } else {
-                    if (isset($_POST['metadata']) || $_POST['metadata'] != "") {
+                    if (isset($_POST['metadata']) && $_POST['metadata'] != "") {
                         add_pastebin($u_data['id'], 0, '', $_POST['alias'], $_POST['title'], base64_encode($_POST['text']), $_POST['metadata']);
                     } else {
                         add_pastebin($u_data['id'], 0, '', $_POST['alias'], $_POST['title'], base64_encode($_POST['text']), '');
